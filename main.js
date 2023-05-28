@@ -52,7 +52,7 @@ window.addEventListener("resize", () => {
 /////////////////////////////////////////////////////////////////////////
 ///// CREATE ORBIT CONTROLS
 const controls = new OrbitControls(camera, renderer.domElement);
-controls.enabled = false;
+controls.enableZoom = false;
 /////////////////////////////////////////////////////////////////////////
 ///// LOADING GLB/GLTF MODEL FROM BLENDER
 loader.load("/uxis.obj", function (obj) {
@@ -132,52 +132,15 @@ function rendeLoop() {
 
 rendeLoop(); //start rendering
 
-let scrollPercent = 0;
-function lerp(x, y, a) {
-    return (1 - a) * x + a * y;
-}
-
-function scalePercent(start, end) {
-    return (scrollPercent - start) / (end - start);
-}
-
 function playScrollAnimations() {
-    // animationScripts.forEach((a) => {
-    //     if (scrollPercent >= a.start && scrollPercent < a.end) {
-    //         a.func()
-    //     }
-    // })
     gsap.to(pointsGeometry.attributes.position.array, {
         endArray: vertices2,
         scrollTrigger: {
-            trigger: ".trigger",
+            trigger: "main",
             start: "top top",
+            end: "bottom bottom",
             scrub: 1,
         },
         onUpdate: () => (pointsGeometry.attributes.position.needsUpdate = true),
     });
 }
-
-animationScripts.push({
-    start: 40,
-    end: 80,
-    func: () => {
-        // if(!pointsGeometry.attributes.position) return;
-        const origin = pointsGeometry.attributes.position.array;
-        const _targetArray = vertices2.map((value, idx) => {
-            return lerp(origin[idx], value, scalePercent(40, 80));
-        });
-        pointsGeometry.setAttribute("position", new THREE.Float32BufferAttribute(_targetArray, 3));
-        //pointsGeometry.attributes.position.needsUpdate = true
-    },
-});
-
-// document.body.onscroll = () => {
-//     scrollPercent =
-//         ((document.documentElement.scrollTop || document.body.scrollTop) /
-//             ((document.documentElement.scrollHeight ||
-//                 document.body.scrollHeight) -
-//                 document.documentElement.clientHeight)) *
-//         100
-//     ;
-// }

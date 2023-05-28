@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<title>My first three.js app</title>
-		<style>
-			body {
+    <head>
+        <meta charset="utf-8" />
+        <title>My first three.js app</title>
+        <style>
+            body {
                 overflow-x: hidden;
                 margin: 0;
                 background: #000;
@@ -17,7 +17,7 @@
             }
             main {
                 width: 100vw;
-                height: 200vw;
+                height: 300vh;
                 z-index: 99;
                 position: absolute;
                 justify-content: center;
@@ -26,16 +26,16 @@
                 font-size: 3vh;
             }
             section {
-                min-height: 100vh;
+                height: 100vh;
                 font-size: 4vh;
-                display:flex;
+                display: flex;
                 align-items: center;
                 justify-content: center;
                 flex-direction: column;
             }
-		</style>
-	</head>
-	<body>
+        </style>
+    </head>
+    <body>
         <main>
             <section>
                 <h2>이쁘나이쁘나</h2>
@@ -44,22 +44,11 @@
                 <h2>이쁘나1</h2>
                 <p>이쁘나1이쁘나1이쁘나1이쁘나1</p>
             </section>
-
-            <section class="trigger">
+            <section>
                 <h2>이쁘나2</h2>
                 <p>이쁘나2이쁘나2이쁘나2이쁘나2</p>
             </section>
-
-            <section>
-                <h2>이쁘나3</h2>
-                <p>이쁘나3이쁘나3이쁘나3이쁘나3</p>
-            </section>
-
-            <section>
-                <h2>이쁘나4</h2>
-                <p>이쁘나4이쁘나4이쁘나4이쁘나4</p>
-            </section>
         </main>
-		<script type="module" src="/main.js"></script>
-	</body>
+        <script type="module" src="/main.js"></script>
+    </body>
 </html>
