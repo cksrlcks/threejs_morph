@@ -20,7 +20,7 @@ document.body.appendChild(container);
 /////////////////////////////////////////////////////////////////////////
 ///// SCENE CREATION
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0xe39469);
+//scene.background = new THREE.Color(0xe39469);
 
 /////////////////////////////////////////////////////////////////////////
 ///// RENDERER CONFIG
@@ -57,8 +57,8 @@ controls.enableZoom = false;
 ///// LOADING GLB/GLTF MODEL FROM BLENDER
 loader.load("/uxis.obj", function (obj) {
     sampler1 = new MeshSurfaceSampler(obj.children[0]).build();
-    transformMesh1();
-    playScrollAnimations();
+    transformMesh1(playScrollAnimations);
+
 });
 
 loader.load("/sphere.obj", function (obj) {
@@ -71,11 +71,10 @@ loader.load("/sphere.obj", function (obj) {
 let sampler1;
 let points;
 let pointsGeometry = new THREE.BufferGeometry();
-const cursor = { x: 0, y: 0 };
 const vertices1 = [];
 const tempPosition1 = new THREE.Vector3();
 
-function transformMesh1() {
+function transformMesh1(callback) {
     for (let i = 0; i < 30000; i++) {
         sampler1.sample(tempPosition1);
         vertices1.push(tempPosition1.x, tempPosition1.y, tempPosition1.z);
@@ -95,6 +94,7 @@ function transformMesh1() {
     points = new THREE.Points(pointsGeometry, pointsMaterial);
 
     scene.add(points);
+    callback && setTimeout(callback)
 }
 
 let sampler2;
@@ -107,25 +107,11 @@ function transformMesh2() {
     }
 }
 
-/////////////////////////////////////////////////////////////////////////
-//// INTRO CAMERA ANIMATION USING TWEEN
-function introAnimation() {
-    gsap.to(pointsGeometry.attributes.position.array, {
-        endArray: vertices2,
-        duration: 2,
-        onUpdate: () => (pointsGeometry.attributes.position.needsUpdate = true),
-    });
-}
-
-/////////////////////////////////////////////////////////////////////////
-///// POST PROCESSING EFFECTS
-let width = window.innerWidth;
-let height = window.innerHeight;
-
-/////////////////////////////////////////////////////////////////////////
-//// RENDER LOOP FUNCTION
-const animationScripts = [];
 function rendeLoop() {
+    if(points){
+        points.rotation.x += 0.001
+        points.rotation.y+= 0.001
+    }
     renderer.render(scene, camera);
     requestAnimationFrame(rendeLoop); //loop the render function
 }
@@ -133,6 +119,7 @@ function rendeLoop() {
 rendeLoop(); //start rendering
 
 function playScrollAnimations() {
+
     gsap.to(pointsGeometry.attributes.position.array, {
         endArray: vertices2,
         scrollTrigger: {
