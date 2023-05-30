@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import * as TWEEN from "/node_modules/three/examples/jsm/libs/tween.module.js";
+import Lenis from '@studio-freight/lenis'
 import { OrbitControls } from "/node_modules/three/examples/jsm/controls/OrbitControls.js";
 import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader";
 import { MeshSurfaceSampler } from "/node_modules/three/examples/jsm/math/MeshSurfaceSampler.js";
@@ -8,6 +8,18 @@ import ScrollTrigger from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
+const lenis = new Lenis({
+    duration: 1.2,
+    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
+});
+
+function raf(time) {
+    lenis.raf(time);
+    ScrollTrigger.update();
+    requestAnimationFrame(raf)
+}
+  
+requestAnimationFrame(raf);
 /////////////////////////////////////////////////////////////////////////
 //// DRACO LOADER TO LOAD DRACO COMPRESSED MODELS FROM BLENDER
 const loader = new OBJLoader();
@@ -21,6 +33,10 @@ document.body.appendChild(container);
 ///// SCENE CREATION
 const scene = new THREE.Scene();
 //scene.background = new THREE.Color(0xe39469);
+
+/////////////////////////////////////////////////////////////////////////
+///// loading spinner
+const loadingSpinner = document.querySelector('.loader-wrapper')
 
 /////////////////////////////////////////////////////////////////////////
 ///// RENDERER CONFIG
@@ -119,7 +135,7 @@ function rendeLoop() {
 rendeLoop(); //start rendering
 
 function playScrollAnimations() {
-
+    loadingSpinner.classList.add('hide')
     gsap.to(pointsGeometry.attributes.position.array, {
         endArray: vertices2,
         scrollTrigger: {
