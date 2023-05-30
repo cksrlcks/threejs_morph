@@ -20,6 +20,9 @@ function raf(time) {
 }
   
 requestAnimationFrame(raf);
+
+let color = '#3D8CD0';
+
 /////////////////////////////////////////////////////////////////////////
 //// DRACO LOADER TO LOAD DRACO COMPRESSED MODELS FROM BLENDER
 const loader = new OBJLoader();
@@ -47,7 +50,7 @@ container.appendChild(renderer.domElement); // add the renderer to html div
 /////////////////////////////////////////////////////////////////////////
 ///// CAMERAS CONFIG
 const camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 1, 100);
-camera.position.set(0, -2, 10);
+camera.position.set(0, 0, 10);
 //camera.lookAt(points);
 scene.add(camera);
 
@@ -60,7 +63,6 @@ window.addEventListener("resize", () => {
     camera.updateProjectionMatrix();
 
     renderer.setSize(width, height);
-    composer.setSize(width, height);
     renderer.setPixelRatio(1);
     m.uniforms.iResolution.value.set(width, height);
 });
@@ -69,6 +71,7 @@ window.addEventListener("resize", () => {
 ///// CREATE ORBIT CONTROLS
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableZoom = false;
+
 /////////////////////////////////////////////////////////////////////////
 ///// LOADING GLB/GLTF MODEL FROM BLENDER
 loader.load("/uxis.obj", function (obj) {
@@ -99,7 +102,7 @@ function transformMesh1(callback) {
     pointsGeometry.setAttribute("position", new THREE.Float32BufferAttribute(vertices1, 3));
 
     const pointsMaterial = new THREE.PointsMaterial({
-        color: 0x5c0b17,
+        //color: 0x5c0b17,
         size: 0.05,
         blending: THREE.AdditiveBlending,
         transparent: true,
@@ -108,9 +111,10 @@ function transformMesh1(callback) {
     });
 
     points = new THREE.Points(pointsGeometry, pointsMaterial);
-
+    
     scene.add(points);
     callback && setTimeout(callback)
+    
 }
 
 let sampler2;
@@ -125,8 +129,12 @@ function transformMesh2() {
 
 function rendeLoop() {
     if(points){
-        points.rotation.x += 0.001
-        points.rotation.y+= 0.001
+       // points.rotation.x += 0.001
+       points.rotation.y += 0.01
+       
+        //points.rotation.z -= 0.001
+
+        points.material.color = new THREE.Color(color)
     }
     renderer.render(scene, camera);
     requestAnimationFrame(rendeLoop); //loop the render function
@@ -136,14 +144,22 @@ rendeLoop(); //start rendering
 
 function playScrollAnimations() {
     loadingSpinner.classList.add('hide')
-    gsap.to(pointsGeometry.attributes.position.array, {
+    const morph = gsap.to(pointsGeometry.attributes.position.array, {
         endArray: vertices2,
-        scrollTrigger: {
-            trigger: "main",
-            start: "top top",
-            end: "bottom bottom",
-            scrub: 1,
-        },
         onUpdate: () => (pointsGeometry.attributes.position.needsUpdate = true),
     });
+
+    ScrollTrigger.create({
+        trigger: "main",
+        start: "top top",
+        end: "bottom bottom",
+        scrub: 1,
+        animation : morph,
+        onUpdate : self => {
+            color = points.material.color.lerpColors(new THREE.Color('#3D8CD0'), new THREE.Color('#5c0b17'), self.progress);
+            
+        }
+    })
+
+
 }
