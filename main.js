@@ -81,9 +81,8 @@ loader.load("/uxis.obj", function (obj) {
         playScrollAnimations();
     });
 });
-
-loader.load("/sphere.obj", function (obj) {
-    sampler2 = new MeshSurfaceSampler(obj.children[0]).build();
+loader.load("/globe.obj", function (obj) {
+    sampler2 = new MeshSurfaceSampler(obj.children[0]).build()
     transformMesh2();
 });
 
@@ -121,7 +120,7 @@ let sampler2;
 const vertices2 = [];
 const tempPosition2 = new THREE.Vector3();
 function transformMesh2() {
-    for (let i = 0; i < 25155 / 3; i++) {
+    for (let i = 0; i < 25155 / 3 ; i++) {
         sampler2.sample(tempPosition2);
         vertices2.push(tempPosition2.x, tempPosition2.y, tempPosition2.z);
     }
