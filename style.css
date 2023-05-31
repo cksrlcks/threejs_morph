@@ -3,14 +3,9 @@
     margin:0;
     padding:0;
 }
-:root {
-    --vh: 100%;
- }
- 
  html,
  body {
-     height: 100vh;
-     height: var(--vh);
+     height: -webkit-fill-available;
  }
 body {
     font-family: 'Bebas Neue', sans-serif;
