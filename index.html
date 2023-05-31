@@ -3,121 +3,7 @@
     <head>
         <meta charset="utf-8" />
         <title>My first three.js app</title>
-        <style>
-            body {
-                overflow-x: hidden;
-                margin: 0;
-                background: #000;
-                color: #fff;
-            }
-            canvas {
-                position: fixed;
-                top: 0;
-                left: 0;
-            }
-            main {
-                width: 100vw;
-                height: 300vh;
-                z-index: 99;
-                position: absolute;
-                justify-content: center;
-                text-align: center;
-                pointer-events: none;
-                font-size: 3vh;
-            }
-            section {
-                height: 100vh;
-                font-size: 4vh;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                flex-direction: column;
-            }
-            .loader-wrapper {
-                position: fixed;
-                top: 0;
-                left: 0;
-                bottom: 0;
-                right: 0;
-                width: 100%;
-                height: 100%;
-                background: #000;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                z-index: 9999;
-                opacity: 1;
-                visibility: visible;
-                transition: linear 0.3s;
-            }
-            .loader-wrapper.hide {
-                opacity: 0;
-                visibility: hidden;
-            }
-            .loader {
-                font-size: 10px;
-                margin: 50px auto;
-                text-indent: -9999em;
-                width: 24px;
-                height: 24px;
-                border-radius: 50%;
-                background: #ffffff;
-                background: -moz-linear-gradient(left, #ffffff 10%, rgba(255, 255, 255, 0) 42%);
-                background: -webkit-linear-gradient(left, #ffffff 10%, rgba(255, 255, 255, 0) 42%);
-                background: -o-linear-gradient(left, #ffffff 10%, rgba(255, 255, 255, 0) 42%);
-                background: -ms-linear-gradient(left, #ffffff 10%, rgba(255, 255, 255, 0) 42%);
-                background: linear-gradient(to right, #ffffff 10%, rgba(255, 255, 255, 0) 42%);
-                position: relative;
-                -webkit-animation: load3 1.4s infinite linear;
-                animation: load3 1.4s infinite linear;
-                -webkit-transform: translateZ(0);
-                -ms-transform: translateZ(0);
-                transform: translateZ(0);
-            }
-            .loader:before {
-                width: 50%;
-                height: 50%;
-                background: #ffffff;
-                border-radius: 100% 0 0 0;
-                position: absolute;
-                top: 0;
-                left: 0;
-                content: "";
-            }
-            .loader:after {
-                background: #000;
-                width: 75%;
-                height: 75%;
-                border-radius: 50%;
-                content: "";
-                margin: auto;
-                position: absolute;
-                top: 0;
-                left: 0;
-                bottom: 0;
-                right: 0;
-            }
-            @-webkit-keyframes load3 {
-                0% {
-                    -webkit-transform: rotate(0deg);
-                    transform: rotate(0deg);
-                }
-                100% {
-                    -webkit-transform: rotate(360deg);
-                    transform: rotate(360deg);
-                }
-            }
-            @keyframes load3 {
-                0% {
-                    -webkit-transform: rotate(0deg);
-                    transform: rotate(0deg);
-                }
-                100% {
-                    -webkit-transform: rotate(360deg);
-                    transform: rotate(360deg);
-                }
-            }
-        </style>
+        <link rel="stylesheet" href="./style.css">
     </head>
     <body>
         <div class="loader-wrapper">
@@ -125,15 +11,16 @@
         </div>
         <main>
             <section class="sec-01">
-                <h2>이쁘나이쁘나</h2>
+                <h2 class="eng-title"><span class="emp">CREATIVE</span> THINKING</h2>
+                <div class="logo">creative group UXIS</div>
             </section>
             <section class="sec-02">
-                <h2>이쁘나1</h2>
-                <p>이쁘나1이쁘나1이쁘나1이쁘나1</p>
+                <h2 class="kor-title">전 영역을 커버하는 전문성과 기술력</h2>
+                <p>믿을 수 있는 인터페이스, 고객의 환경에 유시스의 기술력을 더합니다</p>
             </section>
             <section class="sec-03">
-                <h2>이쁘나2</h2>
-                <p>이쁘나2이쁘나2이쁘나2이쁘나2</p>
+                <h2>트렌드의 흐름에 맞춘 특별한 디자인</h2>
+                <p>스토리를 입힌, 현실적이지만 차별화된 고객만의 모델을 제시합니다</p>
             </section>
         </main>
         <script type="module" src="/main.js"></script>

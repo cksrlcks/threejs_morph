@@ -50,9 +50,12 @@ container.appendChild(renderer.domElement); // add the renderer to html div
 /////////////////////////////////////////////////////////////////////////
 ///// CAMERAS CONFIG
 const camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 1, 100);
-camera.position.set(0, 0, 10);
+camera.position.set(0.05, 0, 10);
 //camera.lookAt(points);
 scene.add(camera);
+let mouseX = 0
+let mouseY = 0
+
 
 /////////////////////////////////////////////////////////////////////////
 ///// MAKE EXPERIENCE FULL SCREEN
@@ -146,21 +149,29 @@ rendeLoop(); //start rendering
 function playScrollAnimations() {
     loadingSpinner.classList.add("hide");
 
-    const morph1 = gsap
+    const tl = gsap
         .timeline()
+        .to('.sec-01 h2', {opacity:0, y:-10, duration:0.2})
+        .to('.sec-01 .logo' ,{y:window.innerHeight/2.8, scale:0.7}, 'key1')
         .to(pointsGeometry.attributes.position.array, {
             endArray: vertices3,
-        })
+        },'key1')
+        .fromTo('.sec-02 h2', {opacity:0, y:-10, }, {opacity:1, y:0, duration:0.2})
+        .fromTo('.sec-02 p',{opacity:0, y:-10, }, {opacity:1, y:0, duration:0.2})
+        .to('.sec-02 ', {opacity:0, y:-10},'key2')
         .to(pointsGeometry.attributes.position.array, {
             endArray: vertices2,
-        });
+        },'key2')
+        .to('canvas', {opacity:0.4}, 'key3', '+=0.4')
+        .fromTo('.sec-03 h2', {opacity:0, y:-10, }, {opacity:1, y:0, duration:0.2}, 'key3')
+        .fromTo('.sec-03 p',{opacity:0, y:-10, }, {opacity:1, y:0, duration:0.2});
 
     ScrollTrigger.create({
         trigger: "main",
         start: "top top",
         end: "bottom bottom",
         scrub: 1,
-        animation: morph1,
+        animation: tl,
         onUpdate: (self) => {
             pointsGeometry.attributes.position.needsUpdate = true;
             if (self.progress < 0.5) {
