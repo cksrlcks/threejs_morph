@@ -6,6 +6,17 @@ import { MeshSurfaceSampler } from "/node_modules/three/examples/jsm/math/MeshSu
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 
+//vh보정
+let vh = 0;
+vh = window.innerHeight * 0.01;
+document.documentElement.style.setProperty('--vh', `${vh}px`);
+const setVh = () => {
+    document.documentElement.style.setProperty('--vh', `${window.innerHeight}px`)
+};
+window.addEventListener('resize', setVh);
+setVh();
+
+
 gsap.registerPlugin(ScrollTrigger);
 ScrollTrigger.config({ignoreMobileResize: true});
 
