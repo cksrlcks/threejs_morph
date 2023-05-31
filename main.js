@@ -51,11 +51,7 @@ container.appendChild(renderer.domElement); // add the renderer to html div
 ///// CAMERAS CONFIG
 const camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 1, 100);
 camera.position.set(0.05, 0, 10);
-//camera.lookAt(points);
 scene.add(camera);
-let mouseX = 0
-let mouseY = 0
-
 
 /////////////////////////////////////////////////////////////////////////
 ///// MAKE EXPERIENCE FULL SCREEN
@@ -67,9 +63,19 @@ window.addEventListener("resize", () => {
 
     renderer.setSize(width, height);
     renderer.setPixelRatio(1);
-    m.uniforms.iResolution.value.set(width, height);
 });
 
+// let oldx = 0;
+// let oldy = 0;
+// window.addEventListener('mousemove', function(e){
+//     let changex = e.x - oldx;
+//     let changey = e.y - oldy;
+//     camera.position.x += changex/10000;
+//     camera.position.y -= changey/10000;
+
+//     oldx = e.x;
+//     oldy = e.y;
+// })
 /////////////////////////////////////////////////////////////////////////
 ///// CREATE ORBIT CONTROLS
 //const controls = new OrbitControls(camera, renderer.domElement);
@@ -104,15 +110,16 @@ function transformMesh1(callback) {
     }
 
     pointsGeometry.setAttribute("position", new THREE.Float32BufferAttribute(vertices1, 3));
-
+    const sprite = new THREE.TextureLoader().load('https://threejs.org/examples/textures/sprites/circle.png');
     const pointsMaterial = new THREE.PointsMaterial({
-        size: 0.05,
+        size: 0.06,
         blending: THREE.AdditiveBlending,
         transparent: true,
         opacity: 0.8,
         depthWrite: false,
+        sizeAttenuation: true,        
+        alphaMap: sprite
     });
-
     points = new THREE.Points(pointsGeometry, pointsMaterial);
 
     scene.add(points);
@@ -140,7 +147,9 @@ function rendeLoop() {
 
         pointsGeometry.attributes.position.needsUpdate = true;
     }
+
     renderer.render(scene, camera);
+  
     requestAnimationFrame(rendeLoop); //loop the render function
 }
 
