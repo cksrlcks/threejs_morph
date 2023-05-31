@@ -7,7 +7,7 @@ import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
-ScrollTrigger.config({ignoreMobileResize: true});
+ScrollTrigger.config({ ignoreMobileResize: true });
 
 const lenis = new Lenis({
     duration: 1.2,
@@ -92,7 +92,7 @@ loader.load("/uxis.obj", function (obj) {
     });
 });
 loader.load("/globe.obj", function (obj) {
-    sampler2 = new MeshSurfaceSampler(obj.children[0]).build()
+    sampler2 = new MeshSurfaceSampler(obj.children[0]).build();
     transformMesh2();
 });
 
@@ -111,15 +111,15 @@ function transformMesh1(callback) {
     }
 
     pointsGeometry.setAttribute("position", new THREE.Float32BufferAttribute(vertices1, 3));
-    const sprite = new THREE.TextureLoader().load('https://threejs.org/examples/textures/sprites/circle.png');
+    const sprite = new THREE.TextureLoader().load("https://threejs.org/examples/textures/sprites/circle.png");
     const pointsMaterial = new THREE.PointsMaterial({
         size: 0.06,
         blending: THREE.AdditiveBlending,
         transparent: true,
         opacity: 0.8,
         depthWrite: false,
-        sizeAttenuation: true,        
-        alphaMap: sprite
+        sizeAttenuation: true,
+        alphaMap: sprite,
     });
     points = new THREE.Points(pointsGeometry, pointsMaterial);
 
@@ -131,7 +131,7 @@ let sampler2;
 const vertices2 = [];
 const tempPosition2 = new THREE.Vector3();
 function transformMesh2() {
-    for (let i = 0; i < 25155 / 3 ; i++) {
+    for (let i = 0; i < 25155 / 3; i++) {
         sampler2.sample(tempPosition2);
         vertices2.push(tempPosition2.x, tempPosition2.y, tempPosition2.z);
     }
@@ -150,7 +150,7 @@ function rendeLoop() {
     }
 
     renderer.render(scene, camera);
-  
+
     requestAnimationFrame(rendeLoop); //loop the render function
 }
 
@@ -161,20 +161,31 @@ function playScrollAnimations() {
 
     const tl = gsap
         .timeline()
-        .to('.sec-01 h2', {opacity:0, y:-10, duration:0.2})
-        .to('.sec-01 .logo' ,{y:window.innerHeight/2.8, scale:0.7}, 'key1')
-        .to(pointsGeometry.attributes.position.array, {
-            endArray: vertices3,
-        },'key1')
-        .fromTo('.sec-02 h2', {opacity:0, y:-10, }, {opacity:1, y:0, duration:0.2})
-        .fromTo('.sec-02 p',{opacity:0, y:-10, }, {opacity:1, y:0, duration:0.2})
-        .to('.sec-02 ', {opacity:0, y:-10},'key2')
-        .to(pointsGeometry.attributes.position.array, {
-            endArray: vertices2,
-        },'key2')
-        .to('canvas', {opacity:0.4}, 'key3', '+=0.4')
-        .fromTo('.sec-03 h2', {opacity:0, y:-10, }, {opacity:1, y:0, duration:0.2}, 'key3')
-        .fromTo('.sec-03 p',{opacity:0, y:-10, }, {opacity:1, y:0, duration:0.2});
+        .to(".sec-01 h2", { opacity: 0, y: -10, duration: 0.2 })
+        .to(".sec-01 .logo", { y: window.innerHeight / 2.8, scale: 0.7 }, "key1")
+        .to(
+            pointsGeometry.attributes.position.array,
+            {
+                endArray: vertices3,
+                duration: 1,
+            },
+            "key1"
+        )
+        .fromTo(".sec-02 h2", { opacity: 0, y: -10 }, { opacity: 1, y: 0, duration: 0.2 })
+        .fromTo(".sec-02 p", { opacity: 0, y: -10 }, { opacity: 1, y: 0, duration: 0.2 })
+        .to(".sec-02 ", { opacity: 1, duration: 1 })
+        .to(".sec-02 ", { opacity: 0, y: -10 }, "key2")
+        .to(
+            pointsGeometry.attributes.position.array,
+            {
+                endArray: vertices2,
+                duration: 2,
+            },
+            "key2"
+        )
+        .to("canvas", { opacity: 0.4 }, "key3", "+=0.4")
+        .fromTo(".sec-03 h2", { opacity: 0, y: -10 }, { opacity: 1, y: 0, duration: 0.2 }, "key3")
+        .fromTo(".sec-03 p", { opacity: 0, y: -10 }, { opacity: 1, y: 0, duration: 0.2 });
 
     ScrollTrigger.create({
         trigger: "main",
